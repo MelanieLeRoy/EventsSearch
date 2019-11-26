@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+
+
 public class Search extends AppCompatActivity {
 
     @Override
@@ -16,7 +18,7 @@ public class Search extends AppCompatActivity {
 
         Button accueilS = findViewById(R.id.accueilS);
 
-        EditText searchQuery = findViewById(R.id.searchquery);
+        final EditText searchQuery = findViewById(R.id.searchquery);
 
         Button rechercher = findViewById(R.id.rechercher);
 
@@ -26,6 +28,22 @@ public class Search extends AppCompatActivity {
                 Intent i = new Intent();
                 setResult(RESULT_CANCELED, i);
                 finish();
+            }
+        });
+
+        rechercher.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String query = searchQuery.getText().toString();
+
+                String url = "https://api.seatgeek.com/2/events?&q=" + query + "&client_id=MTk2Mjk1Nzd8MTU3NDY4NTkyMy40Nw";
+
+                Intent i = new Intent(Search.this, EventsResults.class);
+                i.putExtra("KEY_URL", url);
+                startActivity(i);
+                setResult(RESULT_OK, i);
+
+
             }
         });
     }
