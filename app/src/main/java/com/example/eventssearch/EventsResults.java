@@ -1,11 +1,15 @@
 package com.example.eventssearch;
 
 import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -23,6 +27,7 @@ import java.util.List;
 
 public class EventsResults extends AppCompatActivity {
 
+    private static final int DETAILS_EVENT_REQUEST_CODE = 1;
     List<Event> eventsListResult;
     ArrayAdapter<Event> adapterEvents;
 
@@ -84,7 +89,7 @@ public class EventsResults extends AppCompatActivity {
 
                             System.out.println("AVANT CHANGEMENT EVENT: " + eventsListResult);
 
-                            Event searchedEvent = new Event(id, title, location, date, description);
+                            Event searchedEvent = new Event(id, title, location, date, description, false);
                             searchedEvent.setTaxonomies(genres);
                             searchedEvent.setScore(score);
                             searchedEvent.setUrlTickets(url);
@@ -111,5 +116,45 @@ public class EventsResults extends AppCompatActivity {
 
 
 
+    listEvents.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+           @Override
+           public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+               Event event = (Event) parent.getItemAtPosition(position);
+
+               Intent intent = new Intent ( EventsResults.this, EventDetails.class );
+               intent.putExtra("ID_KEY", event.getId());
+               intent.putExtra("TITLE_KEY", event.getTitle());
+               intent.putExtra("LOCATION_KEY", event.getLocation());
+               intent.putExtra("DATE_KEY", event.getDate());
+               intent.putExtra("DESCRIPTION_KEY", event.getDescription());
+               intent.putExtra("DATE_KEY", event.getDate());
+               intent.putExtra("GENRES_KEY", event.getGenres());
+               intent.putExtra("SCORE_KEY", event.getScore());
+               intent.putExtra("URL_KEY", event.getUrlTickets());
+               intent.putExtra("PARTICIPE_KEY", event.getParticipe());
+
+               if(event.getUrlImage() != null) {
+                   intent.putExtra("URLIMAGE_KEY", event.getUrlImage());
+               }
+
+               intent.putExtra("POSITION_KEY", position);
+
+               startActivityForResult(intent, DETAILS_EVENT_REQUEST_CODE);
+           }
+       });
+
+
     }
+
+   @Override
+   protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+
+       System.out.println("je rentre dans la fonction");
+
+       if (resultCode == RESULT_OK && requestCode == DETAILS_EVENT_REQUEST_CODE) {
+
+           Toast.makeText(getApplicationContext(), "Event checked", Toast.LENGTH_SHORT).show();
+       }
+   }
+
 }

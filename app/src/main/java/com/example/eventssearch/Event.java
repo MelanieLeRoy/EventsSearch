@@ -14,10 +14,11 @@ public class Event {
     private String urlImage;
     private List<String> taxonomies;
     private String description;
+    private boolean participe;
 
 
 
-    public Event(int id, String title, String location, String date, String description) {
+    public Event(int id, String title, String location, String date, String description, boolean participe) {
         this.id = id;
         this.title = title;
         this.location = location;
@@ -25,6 +26,7 @@ public class Event {
         this.taxonomies = new ArrayList<>();
         this.description = description;
         this.urlImage = null;
+        this.participe = false;
     }
 
 
@@ -116,5 +118,13 @@ public class Event {
 
     public String toString(){
         return this.getTitle() + " - " + this.getId() + " - " + this.getGenres() + " - " + this.getDate() + " - " + this.getDescription();
+    }
+
+    public boolean getParticipe() {
+        return this.participe;
+    }
+
+    public void setParticipe(boolean participe) {
+        this.participe = participe;
     }
 }
