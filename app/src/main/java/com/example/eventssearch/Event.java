@@ -24,6 +24,7 @@ public class Event {
         this.date = date;
         this.taxonomies = new ArrayList<>();
         this.description = description;
+        this.urlImage = null;
     }
 
 

@@ -3,6 +3,8 @@ package com.example.eventssearch;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.gson.JsonArray;
@@ -21,14 +23,23 @@ import java.util.List;
 
 public class EventsResults extends AppCompatActivity {
 
+    List<Event> eventsListResult;
+    ArrayAdapter<Event> adapterEvents;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_events_results);
 
-        final TextView textJson = findViewById(R.id.tryEvents);
+        ListView listEvents = findViewById(R.id.listevents);
 
-        List<Event> eventsListResult= new ArrayList<>();
+        eventsListResult = new ArrayList<>();
+
+        adapterEvents = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1, eventsListResult);
+
+        listEvents.setAdapter(adapterEvents);
+
+        System.out.println("LISTE VIDE NORMALEMENT: " + eventsListResult);
 
         Intent i = getIntent();
 
@@ -41,10 +52,11 @@ public class EventsResults extends AppCompatActivity {
                     @Override
                     public void onCompleted(Exception e, JsonObject result) {
                         JsonArray events = result.get("events").getAsJsonArray();
-                        textJson.setText(events.toString());
-                        Iterator ite = events.iterator();
-                        while (ite.hasNext()) {
-                            JsonObject item = (JsonObject) ite.next();
+
+                        //Iterator ite = events.iterator();
+                        for (JsonElement itemElement : events) {
+
+                            JsonObject item = (JsonObject) itemElement;
 
                             int id = item.getAsJsonPrimitive("id").getAsInt();
 
@@ -70,11 +82,16 @@ public class EventsResults extends AppCompatActivity {
 
                             String url = item.getAsJsonPrimitive("url").getAsString();
 
+                            System.out.println("AVANT CHANGEMENT EVENT: " + eventsListResult);
 
                             Event searchedEvent = new Event(id, title, location, date, description);
                             searchedEvent.setTaxonomies(genres);
                             searchedEvent.setScore(score);
                             searchedEvent.setUrlTickets(url);
+
+                            System.out.println("EVENT CHANGE:" + searchedEvent);
+
+                            System.out.println("APRES CHANGEMENT EVENT: " + eventsListResult);
 
                             JsonObject performerImage = (JsonObject) item.getAsJsonArray("performers").get(0);
 
@@ -83,9 +100,16 @@ public class EventsResults extends AppCompatActivity {
                                 searchedEvent.setUrlImage(urlImage);
                             }
 
-                            System.out.println(searchedEvent.toString());
+                            System.out.println("AVANT AJOUT: " + eventsListResult);
+                            adapterEvents.add(searchedEvent);
+                            System.out.println("APRES AJOUT: " + eventsListResult);
                         }
                     }
                 });
+
+
+
+
+
     }
 }

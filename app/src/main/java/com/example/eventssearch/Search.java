@@ -34,7 +34,7 @@ public class Search extends AppCompatActivity {
         rechercher.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String query = searchQuery.getText().toString();
+                String query = searchQuery.getText().toString().replaceAll(" ", "+");
 
                 String url = "https://api.seatgeek.com/2/events?&q=" + query + "&client_id=MTk2Mjk1Nzd8MTU3NDY4NTkyMy40Nw";
 
