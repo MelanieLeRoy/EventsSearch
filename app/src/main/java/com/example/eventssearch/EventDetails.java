@@ -97,6 +97,15 @@ public class EventDetails extends AppCompatActivity {
             }
         });
 
+        accueil.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(EventDetails.this, MainActivity.class);
+
+                startActivity(i);
+            }
+        });
+
 
 
     }
