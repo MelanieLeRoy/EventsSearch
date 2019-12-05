@@ -24,7 +24,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:text="Application Android sur la recherche d'évènements réalisée par Mélanie LE ROY et Corentin Boyer"
+        android:text="Application Android sur la recherche d'évènements réalisée par Mélanie LE ROY et Corentin BOUYER"
         android:textSize="40sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

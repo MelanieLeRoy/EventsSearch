@@ -41,8 +41,6 @@ public class Search extends AppCompatActivity {
                 Intent i = new Intent(Search.this, EventsResults.class);
                 i.putExtra("KEY_URL", url);
                 startActivity(i);
-                setResult(RESULT_OK, i);
-
 
             }
         });

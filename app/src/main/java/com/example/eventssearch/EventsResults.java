@@ -40,7 +40,7 @@ public class EventsResults extends AppCompatActivity {
 
         eventsListResult = new ArrayList<>();
 
-        adapterEvents = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1, eventsListResult);
+        adapterEvents = new EventAdapter(getApplicationContext(), eventsListResult);
 
         listEvents.setAdapter(adapterEvents);
 
@@ -89,7 +89,7 @@ public class EventsResults extends AppCompatActivity {
 
                             System.out.println("AVANT CHANGEMENT EVENT: " + eventsListResult);
 
-                            Event searchedEvent = new Event(id, title, location, date, description, false);
+                            Event searchedEvent = new Event(id, title, location, date, description);
                             searchedEvent.setTaxonomies(genres);
                             searchedEvent.setScore(score);
                             searchedEvent.setUrlTickets(url);
@@ -131,30 +131,15 @@ public class EventsResults extends AppCompatActivity {
                intent.putExtra("GENRES_KEY", event.getGenres());
                intent.putExtra("SCORE_KEY", event.getScore());
                intent.putExtra("URL_KEY", event.getUrlTickets());
-               intent.putExtra("PARTICIPE_KEY", event.getParticipe());
+               intent.putExtra("URLIMAGE_KEY", event.getUrlImage());
 
-               if(event.getUrlImage() != null) {
-                   intent.putExtra("URLIMAGE_KEY", event.getUrlImage());
-               }
-
-               intent.putExtra("POSITION_KEY", position);
-
-               startActivityForResult(intent, DETAILS_EVENT_REQUEST_CODE);
+               startActivity(intent);
            }
        });
 
 
     }
 
-   @Override
-   protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
-       System.out.println("je rentre dans la fonction");
-
-       if (resultCode == RESULT_OK && requestCode == DETAILS_EVENT_REQUEST_CODE) {
-
-           Toast.makeText(getApplicationContext(), "Event checked", Toast.LENGTH_SHORT).show();
-       }
-   }
 
 }

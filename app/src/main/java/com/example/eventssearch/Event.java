@@ -1,9 +1,12 @@
 package com.example.eventssearch;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class Event {
+public class Event implements Parcelable {
 
     private int id;
     private String title;
@@ -14,19 +17,23 @@ public class Event {
     private String urlImage;
     private List<String> taxonomies;
     private String description;
-    private boolean participe;
+    private String genres;
 
+    public Event() {
 
+    }
 
-    public Event(int id, String title, String location, String date, String description, boolean participe) {
+    public Event(int id, String title, String location, String date, String description) {
         this.id = id;
         this.title = title;
         this.location = location;
         this.date = date;
         this.taxonomies = new ArrayList<>();
         this.description = description;
-        this.urlImage = null;
-        this.participe = false;
+        this.urlTickets = "";
+        this.urlImage = "";
+        this.score = 0;
+        this.genres = "";
     }
 
 
@@ -95,14 +102,26 @@ public class Event {
     }
 
     public String getGenres() {
-        String genres = "";
+
+        return this.genres;
+
+    }
+
+    public void setGenres() {
+
+        String someGenres = "";
 
         for (String taxonomie : this.taxonomies) {
-            genres = genres + taxonomie + ',';
+            someGenres += taxonomie + ',';
         }
 
-        return genres.substring(0, genres.length() - 1);
+        this.setGenres(someGenres);
     }
+
+    public void setGenres(String genres) {
+        this.genres = genres;
+    }
+
 
     public void addTaxonomies(String taxonomie) {
         this.taxonomies.add(taxonomie);
@@ -120,11 +139,55 @@ public class Event {
         return this.getTitle() + " - " + this.getId() + " - " + this.getGenres() + " - " + this.getDate() + " - " + this.getDescription();
     }
 
-    public boolean getParticipe() {
-        return this.participe;
+
+
+    //Second constructeur qui sera appelé lors de la "Deparcelablisation"
+    public Event(Parcel in)
+    {
+        this.id = in.readInt();
+        this.title = in.readString();
+        this.location = in.readString();
+        this.date = in.readString();
+        this.description = in.readString();
+        this.score = in.readDouble();
+        this.urlTickets = in.readString();
+        this.urlImage = in.readString();
+        this.genres = in.readString();
     }
 
-    public void setParticipe(boolean participe) {
-        this.participe = participe;
+    @SuppressWarnings("rawtypes")
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator()
+    {
+        public Event createFromParcel(Parcel in)
+        {
+            return new Event(in);
+        }
+
+        @Override
+        public Object[] newArray(int size) {
+            return null;
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
+
+    //On ecrit dans le parcel les données de notre objet
+    @Override
+    public void writeToParcel(Parcel dest, int flags)
+    {
+        dest.writeInt(this.id);
+        dest.writeString(this.title);
+        dest.writeString(this.location);
+        dest.writeString(this.date);
+        dest.writeString(this.description);
+        dest.writeDouble(this.score);
+        dest.writeString(this.urlTickets);
+        dest.writeString(this.urlImage);
+        dest.writeString(this.genres);
+    }
+
+
 }
